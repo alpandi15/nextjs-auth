@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "javascript.format.insertSpaceAfterConstructor": true,
+  "files.associations": {
+    "*.js": "javascriptreact"
+  },
+  "compile-hero.disable-compile-files-on-did-save-code": true
+}
