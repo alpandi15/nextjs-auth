@@ -51,11 +51,11 @@ export type UserContext = {
   user: UserDataContext | null,
   error: { message: string|null }
 }
-export type StateAppContextType = {
+export type StateAppStoreContextType = {
   userAuth: UserContext
 }
 
-const initialData: StateAppContextType = {
+const initialData: StateAppStoreContextType = {
   userAuth: {
     user: null,
     error: {
@@ -64,7 +64,7 @@ const initialData: StateAppContextType = {
   }
 }
 interface InitialContextProps {
-  state: StateAppContextType,
+  state: StateAppStoreContextType,
   dispatch: Dispatch<any>
 }
 const initialContext = {
@@ -79,7 +79,7 @@ const mainReducer = ({userAuth}: any, action: any) => ({
   userAuth: userAuthReducer(userAuth, action),
 });
 
-const AppProvider = ({children}: { children: JSX.Element }) => {
+const AppStoreProvider = ({children}: { children: JSX.Element }) => {
   const [state, dispatch] = useReducer(mainReducer, initialData);
 
   return (
@@ -89,9 +89,6 @@ const AppProvider = ({children}: { children: JSX.Element }) => {
   );
 };
 
-const useAppContext = () => useContext(AppContext)
+export const useAppStoreContext = () => useContext(AppContext)
 
-export default AppProvider
-export {
-  useAppContext
-}
+export default AppStoreProvider
