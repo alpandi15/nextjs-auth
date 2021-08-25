@@ -1,28 +1,49 @@
-import {useEffect} from 'react'
-import type { NextPage } from 'next'
+import type { NextPage, NextPageContext } from 'next'
 import styles from 'styles/Home.module.css'
-import {signIn, signOut, useSession} from 'next-auth/client'
 import {useForm} from 'react-hook-form'
 import Input from 'components/Form/Input'
 import { useRouter } from 'next/router'
+import {apiLogin, LoginPropsType} from 'services/auth'
+import {setCookie} from 'nookies'
+import {TOKEN} from 'constant'
+import {unauthPage} from 'components/Middleware'
 
-const Home: NextPage = () => {
-  const [session, loading] = useSession()
-  const {query} = useRouter()
-  console.log('Session ', session);
+export async function getServerSideProps(ctx: NextPageContext) {
+  const token = await unauthPage(ctx)
+  console.log('TOKEN ', token);
+  return { props: {} }
+}
+
+const Login: NextPage = () => {
+  const {query, push, locale} = useRouter()
 
   const {
     control,
     formState: {errors, isSubmitting},
     handleSubmit
-  } = useForm()
-  const onSubmit = async (values: any) => {
-    console.log(values)
-    signIn('login-credential', {
+  } = useForm<LoginPropsType>()
+
+  const onSubmit = async (values: LoginPropsType) => {
+    const res = await apiLogin({
       account: values?.account,
-      password: values?.password,
-      callbackUrl: `${window.location.origin}${query?.redirect_to}` 
+      password: values?.password
     })
+    if (res?.success) {
+      setCookie(null, TOKEN, res?.data?.token , {
+        maxAge: 7 * 24 * 60 * 60,
+        path: '/',
+      })
+
+      if (query?.redirect_to) {
+        push({
+          pathname: String(query?.redirect_to)
+        }, locale)
+        return
+      }
+      return
+    }
+    alert(res?.message)
+    return
   }
   return (
     <div className={styles.container}>
@@ -51,11 +72,11 @@ const Home: NextPage = () => {
           />
         </div>
         <div>
-          <button type="submit">Login</button>
+          <button type="submit" disabled={isSubmitting}>Login</button>
         </div>
       </form>
     </div>
   )
 }
 
-export default Home
+export default Login

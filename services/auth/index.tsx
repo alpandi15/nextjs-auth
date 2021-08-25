@@ -13,7 +13,11 @@ export async function apiRegister (data: any) {
   })
 }
 
-export async function apiLogin (data: any) {
+export type LoginPropsType = {
+  account: string,
+  password: string
+}
+export async function apiLogin (data: LoginPropsType) {
   return request({
     url: '/auth/login',
     auth: false,

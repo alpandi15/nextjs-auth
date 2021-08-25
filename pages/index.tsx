@@ -1,22 +1,23 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Link from 'next/link'
-import {useSession} from 'next-auth/client'
 import styles from '../styles/Home.module.css'
+import {useSession} from 'components/Middleware'
 
-const Home: NextPage = () => {
-  const [session, loading] = useSession()
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { session } = await useSession(ctx);
+  return {
+    props: { session }
+  }
+}
 
+const Home: NextPage = ({session}: any) => {
   console.log('ZHOME PAGHE ', session)
   return (
     <div className={styles.container}>
       <p>Public Page</p>
-      {
-        !loading && session && (
-          <Link href="/protect">
-            <a>Home Page</a>
-          </Link>
-        )
-      }
+      <Link href="/protect">
+        <a>Protect</a>
+      </Link>
     </div>
   )
 }
