@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import Layout from 'components/Layouts'
-import { AppProvider, SessionProvider } from 'providers'
+import { AppStoreProvider, SessionProvider } from 'providers'
 import '../styles/globals.css'
 import { useRouter } from 'next/dist/client/router'
 
@@ -14,11 +14,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         token: pageProps?.session?.token
       }
     }}>
-      <AppProvider>
+      <AppStoreProvider>
         <Layout>
           <Component {...pageProps} key={asPath}/>
         </Layout>
-      </AppProvider>
+      </AppStoreProvider>
     </SessionProvider.Provider>
   )
 }
