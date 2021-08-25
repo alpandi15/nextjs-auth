@@ -1,5 +1,4 @@
-import { createContext, useEffect, useState, useReducer, useContext, Dispatch } from 'react'
-import {apiGetSession} from 'services/auth'
+import { createContext, useReducer, useContext, Dispatch } from 'react'
 import {userAuthReducer} from 'reducers'
 
 type ImageUrlType = {
@@ -52,11 +51,11 @@ export type UserContext = {
   user: UserDataContext | null,
   error: { message: string|null }
 }
-export type AppContextType = {
+export type StateAppContextType = {
   userAuth: UserContext
 }
 
-const initialData: AppContextType = {
+const initialData: StateAppContextType = {
   userAuth: {
     user: null,
     error: {
@@ -65,7 +64,7 @@ const initialData: AppContextType = {
   }
 }
 interface InitialContextProps {
-  state: AppContextType,
+  state: StateAppContextType,
   dispatch: Dispatch<any>
 }
 const initialContext = {
@@ -92,7 +91,7 @@ const AppProvider = ({children}: { children: JSX.Element }) => {
 
 const useAppContext = () => useContext(AppContext)
 
+export default AppProvider
 export {
-  AppProvider,
   useAppContext
 }

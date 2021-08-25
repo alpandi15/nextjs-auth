@@ -24,7 +24,7 @@ export const authPage = async (ctx: any) => {
       }).end()
     }
 
-    let user: any = {}
+    let user: any = null
   
     const res = await apiGetSession(ctx)
     if (res?.success) {
@@ -34,7 +34,7 @@ export const authPage = async (ctx: any) => {
     return resolve({
       session: {
         user,
-        token: String(allCookies[TOKEN])
+        token: allCookies[TOKEN] || null
       }
     });
   });
@@ -43,7 +43,7 @@ export const authPage = async (ctx: any) => {
 export const useSession = async (ctx: any) => {
   return new Promise<{session: {user: any|null|undefined, token: string|null|undefined}}>(async resolve => {
     const allCookies = nookies.get(ctx)
-    let user: any = {}
+    let user: any = null
   
     const res = await apiGetSession(ctx)
     if (res?.success) {
@@ -53,7 +53,7 @@ export const useSession = async (ctx: any) => {
     return resolve({
       session: {
         user,
-        token: String(allCookies[TOKEN])
+        token: allCookies[TOKEN] || null
       }
     });
   });

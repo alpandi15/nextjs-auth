@@ -10,8 +10,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 }
 
-const Home: NextPage = ({session}: any) => {
-  console.log('ZHOME PAGHE ', session)
+const Home: NextPage = () => {
+  // console.log('ZHOME PAGHE ', session)
   return (
     <div className={styles.container}>
       <p>Public Page</p>

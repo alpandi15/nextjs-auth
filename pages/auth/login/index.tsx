@@ -40,6 +40,9 @@ const Login: NextPage = () => {
         }, locale)
         return
       }
+      push({
+        pathname: '/'
+      }, locale)
       return
     }
     alert(res?.message)

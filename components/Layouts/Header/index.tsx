@@ -1,11 +1,11 @@
 import {memo} from 'react'
 import Link from 'next/link'
-import {useSession, signOut} from 'next-auth/client'
+import {useSessionContext} from 'providers'
+import {logout} from 'services/auth'
 import styles from './Header.module.css'
 
 const Header = () => {
-  const [session, loading] = useSession()
-  console.log('HEADER ', session, loading);
+  const {session} = useSessionContext()
   return (
     <header className={styles.container}>
       <div>
@@ -16,8 +16,8 @@ const Header = () => {
       <div>Header</div>
       <div>
         {
-          !loading && session ? (
-            <button onClick={() => signOut()}>Logout</button>
+          session?.user ? (
+            <button onClick={logout.bind(this)}>Logout</button>
           ) : (
             <Link href="/auth/login">
               <a>Login</a>
