@@ -35,19 +35,17 @@ const Login: NextPage = () => {
       })
 
       if (query?.redirect_to) {
-        push({
-          pathname: String(query?.redirect_to)
-        }, locale)
+        const url = String(query?.redirect_to)
+        push(url, undefined, {locale})
         return
       }
-      push({
-        pathname: '/'
-      }, locale)
+      push('/', undefined, {locale})
       return
     }
     alert(res?.message)
     return
   }
+
   return (
     <div className={styles.container}>
       <div>Login</div>
