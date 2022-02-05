@@ -1,4 +1,4 @@
-import type { NextPage, NextPageContext } from 'next'
+import type { NextPageContext } from 'next'
 import styles from 'styles/Home.module.css'
 import {useForm} from 'react-hook-form'
 import Input from 'components/Form/Input'
@@ -6,7 +6,9 @@ import { useRouter } from 'next/router'
 import {apiLogin, LoginPropsType} from 'services/auth'
 import {setCookie} from 'nookies'
 import {TOKEN} from 'constant'
+import Layout from 'components/Layouts'
 import {unauthPage} from 'components/Middleware'
+import { ReactElement } from 'react'
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = await unauthPage(ctx)
@@ -14,7 +16,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   return { props: {} }
 }
 
-const Login: NextPage = () => {
+const Login = () => {
   const {query, push, locale} = useRouter()
 
   const {
@@ -77,6 +79,14 @@ const Login: NextPage = () => {
         </div>
       </form>
     </div>
+  )
+}
+
+Login.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }
 

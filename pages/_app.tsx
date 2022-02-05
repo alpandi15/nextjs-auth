@@ -1,11 +1,21 @@
 import type { AppProps } from 'next/app'
-import Layout from 'components/Layouts'
 import { AppStoreProvider, SessionProvider } from 'providers'
 import '../styles/globals.css'
 import { useRouter } from 'next/dist/client/router'
+import { ReactElement, ReactNode } from 'react'
+import { NextPage } from 'next'
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const {asPath} = useRouter()
+  const getLayout = Component.getLayout ?? ((page) => page)
 
   return (
     <SessionProvider.Provider value={{
@@ -15,9 +25,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       }
     }}>
       <AppStoreProvider>
-        <Layout>
-          <Component {...pageProps} key={asPath}/>
-        </Layout>
+        <>
+          {
+            getLayout(
+              <Component {...pageProps} key={asPath}/>
+            )
+          }
+        </>
       </AppStoreProvider>
     </SessionProvider.Provider>
   )
