@@ -18,7 +18,7 @@ module.exports = {
     API_VERSION: process.env.API_VERSION || '',
 
     API_IMAGE_PROTOCOL: process.env.API_IMAGE_PROTOCOL || 'http',
-    API_IMAGE: process.env.API_IMAGE || 'localhost',
+    API_IMAGE_HOST: process.env.API_IMAGE_HOST || 'localhost',
     API_IMAGE_PORT: process.env.API_IMAGE_PORT || '3000',
     API_IMAGE_VERSION: process.env.API_IMAGE_VERSION || '',
 
@@ -41,11 +41,12 @@ module.exports = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     domains: [
-      // 'v2.padiplay.com',
-      `${process.env.API_IMAGE_PROTOCOL}://${process.env.API_IMAGE_HOST}:${process.env.API_IMAGE_PORT}/${process.env.API_IMAGE_VERSION}`
+      // '147.139.170.42',
+      `${process.env.API_IMAGE_HOST}`
     ],
     path: '/_next/image',
     loader: 'default',
+    minimumCacheTTL: 60,
   },
   webpack: config => {
     config.resolve.alias['@/components'] = path.join(__dirname, 'components')
