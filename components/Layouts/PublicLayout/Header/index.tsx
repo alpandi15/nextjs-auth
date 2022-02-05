@@ -1,7 +1,6 @@
 import {memo} from 'react'
 import Link from 'next/link'
 import {useSessionContext} from 'providers'
-import {logout} from '../../../../services/auth'
 import styles from './Header.module.css'
 
 const Header = () => {
@@ -18,7 +17,9 @@ const Header = () => {
         {
           session?.user ? (
             <>
-              <button onClick={logout.bind(this)}>Logout</button>
+              <Link href="/profile">
+                <a>{session.user.lastName}</a>
+              </Link>
             </>
           ) : (
             <Link href="/auth/login">
