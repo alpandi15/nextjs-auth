@@ -1,8 +1,10 @@
 import type { GetServerSideProps } from 'next'
 import styles from '../styles/Home.module.css'
-import {withAuthSync} from 'components/Auth/security'
 import {authPage} from 'components/Middleware'
 import {logout} from 'services/auth'
+import {ProtectLayout as Layout} from 'components/Layouts'
+import { ReactElement } from 'react'
+import type {Page} from 'types/page'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { session } = await authPage(ctx);
@@ -11,13 +13,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 }
 
-const Home = ({session}: any) => {
+const Home: Page = ({session}: any) => {
   if (!session) return <div></div>
 
   if (session) {
     return (
       <div className={styles.container}>
-        <h1>Protected Page</h1>
+        <h1>Profile Page</h1>
         <h3>{session?.user?.firstName}</h3>
         <button onClick={logout.bind(this)}>Sign Out</button>
         <p>You can view this page because you are signed in.</p>
@@ -31,4 +33,10 @@ const Home = ({session}: any) => {
   )
 }
 
-export default withAuthSync(Home)
+Home.getLayout = (page: ReactElement) => {
+  return (
+    <Layout>{page}</Layout>
+  )
+}
+
+export default Home

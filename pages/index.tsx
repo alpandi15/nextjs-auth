@@ -1,6 +1,6 @@
 import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
-import Layout from 'components/Layouts'
+import {PublicLayout as Layout} from 'components/Layouts'
 import styles from '../styles/Home.module.css'
 import {useSession} from 'components/Middleware'
 import { ReactElement } from 'react'
@@ -17,8 +17,8 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <p>Public Page</p>
-      <Link href="/protect">
-        <a>Protect</a>
+      <Link href="/profile">
+        <a>Profile</a>
       </Link>
     </div>
   )

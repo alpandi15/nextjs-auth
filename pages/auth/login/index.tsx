@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import {apiLogin, LoginPropsType} from 'services/auth'
 import {setCookie} from 'nookies'
 import {TOKEN} from 'constant'
-import Layout from 'components/Layouts'
+import {PublicLayout as Layout} from 'components/Layouts'
 import {unauthPage} from 'components/Middleware'
 import { ReactElement } from 'react'
 
