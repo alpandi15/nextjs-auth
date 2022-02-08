@@ -44,15 +44,19 @@ const Home: Page = ({session}: any) => {
           />
         </div>
         <h3>{session?.user?.firstName}</h3>
-        <button onClick={logout.bind(this)}>Sign Out</button>
-        <div>
+        <div className="mt-4">
+          <button className="bg-red-500 text-white px-2 rounded" onClick={logout.bind(this)}>Sign Out</button>
+        </div>
+        <div className="mt-4">
           <div>
             <Link href="/account/change-password">
-              <a href="">Change Password</a>
+              <a className="underline">Change Password</a>
             </Link>
           </div>
         </div>
-        <p>You can view this page because you are signed in.</p>
+        <div className="mt-6">
+          <p>You can view this page because you are signed in.</p>
+        </div>
       </div>
     )
   }

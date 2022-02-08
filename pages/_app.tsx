@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import { AppStoreProvider, SessionProvider } from 'providers'
 import '../styles/globals.css'
+import '../styles/tailwind.css'
 import { useRouter } from 'next/dist/client/router'
 import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
