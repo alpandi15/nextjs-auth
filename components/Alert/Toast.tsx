@@ -1,10 +1,12 @@
 import { FC } from 'react'
 import ReactDOM from 'react-dom'
+import cn from 'classnames'
 
 type PropsToast = {
+  title?: string|null;
   message: string;
   transitionPercentage: number;
-  color?: string|null;
+  color?: 'gray'|'red'|'green'|'orange';
   duration: number;
   slideIn?: boolean
 }
@@ -12,10 +14,35 @@ type PropsToast = {
 const Toast: FC<PropsToast> = (props) => {
   return (
     <div className="toast-message-container">
-      <div className="side-bar"></div>
-      <div id="toast-message" className="toast-message">
-        {/* Message to be added here */}
-        { props.message }
+      <div className={cn({
+        'w-full border-t-4 rounded-b px-4 py-3 shadow-md': true,
+        'bg-gray-100': props.color === 'gray',
+        'border-gray-500': props.color === 'gray',
+        'text-gray-900': props.color === 'gray',
+        'bg-red-100': props.color === 'red',
+        'border-red-500': props.color === 'red',
+        'text-red-900': props.color === 'red',
+        'bg-green-100': props.color === 'green',
+        'border-green-500': props.color === 'green',
+        'text-green-900': props.color === 'green',
+        'bg-yellow-100': props.color === 'orange',
+        'border-yellow-500': props.color === 'orange',
+        'text-yellow-900': props.color === 'orange',
+        })
+      }
+        role="alert"
+      >
+        <div className="flex">
+          {/* <div className="py-1"><svg className="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div> */}
+          <div>
+            {
+              props.title && (
+                <p className="font-bold">{props.title}</p>
+              )
+            }
+            <p className="text-sm">{props.message}</p>
+          </div>
+        </div>
       </div>
       {/* Static Styling */}
       <style jsx>{`
@@ -52,12 +79,12 @@ const Toast: FC<PropsToast> = (props) => {
           }
         }
         .toast-message-container {
-          color: ${ props.color || 'grey' };
+          // color: ${ props.color || 'grey' };
           max-width: 400px;
-          background: ${ props.color || 'grey' };
-          box-shadow: 0px 0px 30px #0000001f;
+          // background: ${ props.color || 'grey' };
+          // box-shadow: 0px 0px 30px #0000001f;
           margin: 0px auto;
-          border-radius: 4px;
+          // border-radius: 4px;
           display: flex;
           animation: SlideInOut ${props.duration}s ease-in-out;
         }
@@ -67,7 +94,6 @@ const Toast: FC<PropsToast> = (props) => {
 }
 
 export const ToastContainer = () => {
-  console.log('RENDER TOAST CONTAINER');
   return (
     <div id="toast-container" className="toast-container">
       <style jsx>{`
@@ -83,6 +109,7 @@ export const ToastContainer = () => {
 }
 
 type OptionsNotifyProps = {
+  title?: string;
   duration: number;
   type: 'info'|'success'|'error'|'warn';
 }
@@ -91,7 +118,7 @@ type ToastProps = {
   remove: () => void;
   currentToast: boolean;
   timeout: any;
-  notify: (message: string, oprions: OptionsNotifyProps) => void;
+  notify: (message: string, options: OptionsNotifyProps) => void;
 }
 export const toast: ToastProps = {
   remove: () => {
@@ -106,12 +133,12 @@ export const toast: ToastProps = {
   timeout: null,
   notify: (message, options) =>{
     let duration = 5
-    let color = 'grey'
+    let color: 'gray'|'red'|'green'|'orange'|null = 'gray'
     if( options ){
       if( options.duration)
         duration = options.duration
       if( options.type === "info") 
-        color = 'grey'
+        color = 'gray'
       if( options.type === "success") 
         color = 'green'
       if( options.type === "error") 
@@ -126,10 +153,11 @@ export const toast: ToastProps = {
 
     let trasitionPercentage = 0.3*(100/duration)
 
-    ReactDOM.render(<Toast 
+    ReactDOM.render(<Toast
+      title={options.title || null}
       message={message} 
       slideIn={true} 
-      color={ color || null }
+      color={color || null}
       transitionPercentage={trasitionPercentage} 
       duration={duration} />, document.getElementById('toast-container'));
     toast.currentToast = true

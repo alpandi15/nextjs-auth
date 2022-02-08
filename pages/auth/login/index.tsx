@@ -12,6 +12,7 @@ import { ReactElement } from 'react'
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
 import Button from 'components/Form/Button'
+import {toast} from 'components/Alert/Toast'
 
 const validationSchema = yupResolver(
   yup.object({
@@ -53,10 +54,19 @@ const Login = () => {
         push(url, undefined, {locale})
         return
       }
+      toast.notify(res?.meta?.message, {
+        title: 'Success',
+        duration: 2,
+        type: 'success'
+      });
       push('/', undefined, {locale})
       return
     }
-    alert(res?.message)
+    toast.notify(res?.message, {
+      title: 'Error Login',
+      duration: 5,
+      type: 'error'
+    });
     return
   }
 
