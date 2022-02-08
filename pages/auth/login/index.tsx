@@ -11,6 +11,7 @@ import {unauthPage} from 'components/Middleware'
 import { ReactElement } from 'react'
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
+import Button from 'components/Form/Button'
 
 const validationSchema = yupResolver(
   yup.object({
@@ -68,7 +69,6 @@ const Login = () => {
             type="text"
             id="account"
             name="account"
-            icon="email"
             label="Email/Phone"
             control={control}
             placeholder="Email or Phone Number"
@@ -83,12 +83,11 @@ const Login = () => {
             label="Password"
             control={control}
             placeholder="Password"
-            icon="lock"
             error={errors?.password}
           />
         </div>
         <div className="mt-4">
-          <button className="px-4  py-2 w-full disabled:bg-gray-300 flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 text-sm text-white py-1 px-2 rounded" type="submit" disabled={isSubmitting}>Login</button>
+          <Button className="w-full" type="submit" disabled={isSubmitting}>Login</Button>
         </div>
       </form>
     </div>

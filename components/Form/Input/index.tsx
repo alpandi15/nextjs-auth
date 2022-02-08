@@ -1,7 +1,16 @@
+import type {FC, InputHTMLAttributes, ReactNode} from 'react'
 import { Controller } from 'react-hook-form'
 import classNames from 'classnames'
 
-const InputComponent = ({
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: ReactNode;
+  labelClassName?: string;
+  wrapperClassName?: string;
+  control: ReactNode;
+}
+
+const InputComponent: FC<InputProps> = ({
   type = 'text',
   placeholder,
   name,
