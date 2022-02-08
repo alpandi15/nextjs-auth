@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  error?: ReactNode;
+  error?: string;
   labelClassName?: string;
   wrapperClassName?: string;
   control: ReactNode;
@@ -58,7 +58,7 @@ const InputComponent: FC<InputProps> = ({
               />
               {
                 error && (
-                  <p className="text-red-500 text-xs italic">{error?.message}</p>
+                  <p className="text-red-500 text-xs italic">{error}</p>
                 )
               }
             </div>

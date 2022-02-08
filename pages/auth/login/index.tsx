@@ -15,8 +15,8 @@ import Button from 'components/Form/Button'
 
 const validationSchema = yupResolver(
   yup.object({
-    account: yup.string().required('Required'),
-    password: yup.string().required('Required').min(6, 'Min 6 Characters')
+    account: yup.string().required('*Required'),
+    password: yup.string().required('*Required').min(6, 'Min 6 Characters')
   })
 );
 
@@ -72,7 +72,7 @@ const Login = () => {
             label="Email/Phone"
             control={control}
             placeholder="Email or Phone Number"
-            error={errors?.account}
+            error={errors?.account?.message}
           />
         </div>
         <div>
@@ -83,7 +83,7 @@ const Login = () => {
             label="Password"
             control={control}
             placeholder="Password"
-            error={errors?.password}
+            error={errors?.password?.message}
           />
         </div>
         <div className="mt-4">
