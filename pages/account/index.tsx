@@ -6,7 +6,7 @@ import {ProtectLayout as Layout} from 'components/Layouts'
 import { ReactElement } from 'react'
 import type {Page} from 'types/page'
 import Link from 'next/link'
-import styles from './Profile.module.css'
+import styles from 'styles/Account.module.css'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { session } = await authPage(ctx);

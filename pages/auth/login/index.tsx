@@ -9,11 +9,20 @@ import {TOKEN} from 'constant'
 import {PublicLayout as Layout} from 'components/Layouts'
 import {unauthPage} from 'components/Middleware'
 import { ReactElement } from 'react'
+import * as yup from 'yup'
+import {yupResolver} from '@hookform/resolvers/yup'
+
+const validationSchema = yupResolver(
+  yup.object({
+    account: yup.string().required('Required'),
+    password: yup.string().required('Required').min(6, 'Min 6 Characters')
+  })
+);
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = await unauthPage(ctx)
-  console.log('TOKEN ', token);
-  return { props: {} }
+  // console.log('TOKEN ', token);
+  return { props: {token} }
 }
 
 const Login = () => {
@@ -23,7 +32,9 @@ const Login = () => {
     control,
     formState: {errors, isSubmitting},
     handleSubmit
-  } = useForm<LoginPropsType>()
+  } = useForm<LoginPropsType>({
+    resolver: validationSchema
+  })
 
   const onSubmit = async (values: LoginPropsType) => {
     const res = await apiLogin({
@@ -51,16 +62,17 @@ const Login = () => {
   return (
     <div className={styles.container}>
       <div>Login</div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
         <div>
           <Input
             type="text"
             id="account"
             name="account"
             icon="email"
+            label="Email/Phone"
             control={control}
             placeholder="Email or Phone Number"
-            error={errors?.account?.message}
+            error={errors?.account}
           />
         </div>
         <div>
@@ -68,14 +80,15 @@ const Login = () => {
             type="password"
             id="password"
             name="password"
+            label="Password"
             control={control}
             placeholder="Password"
             icon="lock"
-            error={errors?.password?.message}
+            error={errors?.password}
           />
         </div>
-        <div>
-          <button type="submit" disabled={isSubmitting}>Login</button>
+        <div className="mt-4">
+          <button className="px-4  py-2 w-full disabled:bg-gray-300 flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 text-sm text-white py-1 px-2 rounded" type="submit" disabled={isSubmitting}>Login</button>
         </div>
       </form>
     </div>

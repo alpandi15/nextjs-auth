@@ -1,4 +1,5 @@
 import { Controller } from 'react-hook-form'
+import classNames from 'classnames'
 
 const InputComponent = ({
   type = 'text',
@@ -9,6 +10,8 @@ const InputComponent = ({
   control,
   validate,
   className,
+  labelClassName,
+  wrapperClassName,
   label,
   disabled,
   readOnly,
@@ -22,9 +25,9 @@ const InputComponent = ({
       rules={validate}
       render={({ field: { onChange, onBlur, ...props } }: any) => {
         return (
-          <div className={className}>
+          <div className={classNames('my-2', wrapperClassName)}>
             {
-              label && (<div>{label}</div>)
+              label && (<label htmlFor={id} className={classNames('text-sm font-bold text-gray-600', labelClassName)}>{label}</label>)
             }
             <div className="w-full relative">
               <input
@@ -34,7 +37,10 @@ const InputComponent = ({
                 type={type}
                 onChange={onChange}
                 onBlur={onBlur}
-                className={error ? `${className} invalid` : className}
+                className={classNames({
+                  'bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500': true,
+                  'invalid': error
+                }, className)}
                 disabled={disabled}
                 readOnly={readOnly}
                 maxLength={maxLength}
@@ -43,9 +49,7 @@ const InputComponent = ({
               />
               {
                 error && (
-                  <span>
-                    {error}
-                  </span>
+                  <p className="text-red-500 text-xs italic">{error?.message}</p>
                 )
               }
             </div>

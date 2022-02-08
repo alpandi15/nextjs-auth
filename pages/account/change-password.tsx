@@ -1,12 +1,14 @@
 import type { GetServerSideProps } from 'next'
-import Image from 'next/image'
+// import Image from 'next/image'
 import {authPage} from 'components/Middleware'
-import {logout} from 'services/auth'
+// import {logout} from 'services/auth'
 import {ProtectLayout as Layout} from 'components/Layouts'
 import { ReactElement } from 'react'
 import type {Page} from 'types/page'
-import Link from 'next/link'
-import styles from './Profile.module.css'
+import {useForm} from 'react-hook-form'
+// import Link from 'next/link'
+import styles from 'styles/Account.module.css'
+import AccessDenied from 'components/PageError/AccessDenied'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { session } = await authPage(ctx);
@@ -16,8 +18,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 }
 
 const ChangePassword: Page = ({session}: any) => {
-  if (!session) return <div></div>
-
   if (session) {
     return (
       <div className={styles.container}>
@@ -25,11 +25,7 @@ const ChangePassword: Page = ({session}: any) => {
       </div>
     )
   }
-  return (
-    <div className={styles.container}>
-      <p>Access Denied</p>
-    </div>
-  )
+  return <AccessDenied />
 }
 
 ChangePassword.getLayout = (page: ReactElement) => {
