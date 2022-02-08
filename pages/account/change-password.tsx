@@ -50,13 +50,15 @@ const ChangePassword = () => {
     })
     if (res?.success) {
       toast.notify(res?.meta?.message, {
-        duration: 5,
+        title: 'Success',
+        duration: 2,
         type: 'success'
       });
       back()
       return
     }
     toast.notify(res?.message, {
+      title: 'Error',
       duration: 5,
       type: 'error'
     });
