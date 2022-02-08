@@ -4,14 +4,13 @@ import {useForm} from 'react-hook-form'
 import Input from 'components/Form/Input'
 import { useRouter } from 'next/router'
 import {apiChangePassword} from 'services/account'
-import {setCookie} from 'nookies'
-import {TOKEN} from 'constant'
 import {ProtectLayout as Layout} from 'components/Layouts'
 import {authPage} from 'components/Middleware'
 import { ReactElement } from 'react'
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
 import Button from 'components/Form/Button'
+import {toast} from 'components/Alert/Toast'
 
 const validationSchema = yupResolver(
   yup.object({
@@ -50,9 +49,17 @@ const ChangePassword = () => {
       password: values?.password
     })
     if (res?.success) {
+      toast.notify(res?.meta?.message, {
+        duration: 5,
+        type: 'success'
+      });
       back()
       return
     }
+    toast.notify(res?.message, {
+      duration: 5,
+      type: 'error'
+    });
   }
 
   return (
@@ -96,6 +103,7 @@ const ChangePassword = () => {
           <Button className="w-full" type="submit" disabled={isSubmitting}>Change</Button>
         </div>
       </form>
+      {/* <ToastContainer /> */}
     </div>
   )
 }
