@@ -8,7 +8,7 @@ export const getAllUsers = async (req: NextApiRequest, res: NextApiResponse) => 
     let posts = await db
       .collection('users')
       .find({})
-      .sort({ published: -1 })
+      // .sort({ published: -1 })
       .toArray();
 
     // res.status(200).json({ data: JSON.parse(JSON.stringify(posts)) })
@@ -41,6 +41,12 @@ export const register = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     let {userName, password} = req.body;
     let { db } = await connectToDatabase();
+    // check user exist by username
+    const findUser = await db.collection('users').findOne({username: userName})
+    if (findUser) {
+      return responseClient(res, 422, 10, 'User Exist', {})
+    }
+    
     let posts = await db
       .collection('users')
       .insertOne({
@@ -53,5 +59,6 @@ export const register = async (req: NextApiRequest, res: NextApiResponse) => {
     responseClient(res, 200, 0, 'Success', { data: posts })
   } catch (error) {
     console.log('Error ', error)
+    return responseClient(res, 500, 500, 'Internal Server Error', {})
   }
 }
