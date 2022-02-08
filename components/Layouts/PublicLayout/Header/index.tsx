@@ -17,7 +17,7 @@ const Header = () => {
         {
           session?.user ? (
             <>
-              <Link href="/profile">
+              <Link href="/account">
                 <a>{session.user.lastName}</a>
               </Link>
             </>

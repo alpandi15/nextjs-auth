@@ -5,6 +5,7 @@ import {logout} from 'services/auth'
 import {ProtectLayout as Layout} from 'components/Layouts'
 import { ReactElement } from 'react'
 import type {Page} from 'types/page'
+import Link from 'next/link'
 import styles from './Profile.module.css'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -14,9 +15,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 }
 
-const sanityIoImageLoader = ({ src, width, quality }) => {
-  return `https://cdn.sanity.io/${src}?w=${width}&q=${quality || 75}`
-}
 const placeholderImage = 
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mPcsnt3PQAHAAKrcPYcMAAAAABJRU5ErkJggg==';
 
@@ -32,8 +30,8 @@ const Home: Page = ({session}: any) => {
             // loader={sanityIoImageLoader}
             src={session?.user?.image?.url}
             alt="Picture of the author"
-            width={200}
-            height={200}
+            // width={200}
+            // height={200}
             layout="fill"
             quality={100}
             objectFit="cover"
@@ -47,6 +45,13 @@ const Home: Page = ({session}: any) => {
         </div>
         <h3>{session?.user?.firstName}</h3>
         <button onClick={logout.bind(this)}>Sign Out</button>
+        <div>
+          <div>
+            <Link href="/account/change-password">
+              <a href="">Change Password</a>
+            </Link>
+          </div>
+        </div>
         <p>You can view this page because you are signed in.</p>
       </div>
     )

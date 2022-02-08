@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <p>Public Page</p>
-      <Link href="/profile">
+      <Link href="/account">
         <a>Profile</a>
       </Link>
     </div>
