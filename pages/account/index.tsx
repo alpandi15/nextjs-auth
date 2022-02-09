@@ -26,24 +26,28 @@ const Home: Page = ({session}: any) => {
       <div className={styles.container}>
         <h1>Profile Page</h1>
         <div className={styles.image}>
-          <Image
-            // loader={sanityIoImageLoader}
-            src={session?.user?.image?.url}
-            alt="Picture of the author"
-            // width={200}
-            // height={200}
-            layout="fill"
-            quality={100}
-            objectFit="cover"
-            loading="lazy"
-            unoptimized={false}
-            placeholder="blur"
-            // className="profile-image"
-            // onLoadingComplete={(imageDimension) => console.log(imageDimension)}
-            blurDataURL={placeholderImage}
-          />
+          {
+            session?.user?.image && (
+              <Image
+                // loader={sanityIoImageLoader}
+                src={session?.user?.image?.url}
+                alt="Picture of the author"
+                // width={200}
+                // height={200}
+                layout="fill"
+                quality={100}
+                objectFit="cover"
+                loading="lazy"
+                unoptimized={false}
+                placeholder="blur"
+                // className="profile-image"
+                // onLoadingComplete={(imageDimension) => console.log(imageDimension)}
+                blurDataURL={placeholderImage}
+              />
+            )
+          }
         </div>
-        <h3>{session?.user?.firstName}</h3>
+        <h3>{session?.user?.name}</h3>
         <div className="mt-4">
           <button className="bg-red-500 text-white px-2 rounded" onClick={logout.bind(this)}>Sign Out</button>
         </div>
