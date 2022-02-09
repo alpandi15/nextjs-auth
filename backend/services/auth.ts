@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import {connectToDatabase} from 'backend/config/db-connection'
 import {responseClient} from 'backend/utils/util'
-import {saltHashPassword, generateToken, isValidPassword, extractTokenProfile} from 'backend/utils/security'
+import {saltHashPassword, generateToken, isValidPassword} from 'backend/utils/security'
 import UserModel from 'backend/models/userModel'
 import moment from 'moment'
 import { ObjectId } from 'mongodb'
