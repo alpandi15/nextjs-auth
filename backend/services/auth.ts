@@ -5,6 +5,7 @@ import {saltHashPassword, generateToken} from 'backend/utils/security'
 import {UserModel} from 'backend/models/users'
 import moment from 'moment'
 import { ObjectId } from 'mongodb'
+import {SUCCESS, DATA_NOTFOUND, DATA_EXIST, INTERNAL_ERROR} from 'backend/config/response-code'
 
 export const getAllUsers = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -16,7 +17,7 @@ export const getAllUsers = async (req: NextApiRequest, res: NextApiResponse) => 
       .toArray();
 
     // res.status(200).json({ data: JSON.parse(JSON.stringify(posts)) })
-    responseClient(res, 200, 0, 'Success', { data: JSON.parse(JSON.stringify(posts)) })
+    responseClient(res, 200, SUCCESS, 'Success', { data: JSON.parse(JSON.stringify(posts)) })
   } catch (error) {
     console.log('Error ', error)
   }
@@ -35,7 +36,7 @@ export const login = async (req: NextApiRequest, res: NextApiResponse) => {
     
     console.log('FIND ONE ', posts);
     // res.status(200).json({ data: JSON.parse(JSON.stringify(posts)) })
-    responseClient(res, 200, 0, 'Success', { data: posts })
+    responseClient(res, 200, SUCCESS, 'Success', { data: posts })
   } catch (error) {
     console.log('Error ', error)
   }
@@ -49,7 +50,7 @@ export const register = async (req: NextApiRequest, res: NextApiResponse) => {
     // check user exist by username
     const findUser = await userModel.find('username', username)
     if (findUser) {
-      return responseClient(res, 422, 10, 'User Exist', {})
+      return responseClient(res, 422, DATA_EXIST, 'User Exist')
     }
     const {salt, hash} = saltHashPassword(password)
     userModel.hash = hash
@@ -72,8 +73,8 @@ export const register = async (req: NextApiRequest, res: NextApiResponse) => {
       expires_in: '30d'
     }
 
-    return responseClient(res, 200, 0, 'Success', responseData)
+    return responseClient(res, 200, SUCCESS, 'Success', responseData)
   } catch (error) {
-    return responseClient(res, 500, 500, 'Internal Server Error', {})
+    return responseClient(res, 500, INTERNAL_ERROR, 'Internal Server Error', {})
   }
 }

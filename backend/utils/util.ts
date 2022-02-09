@@ -1,7 +1,6 @@
 import crypto from 'crypto'
 import type { NextApiResponse } from 'next'
 
-// export const MD5_SUFFIX = 'eiowafnajkdlfjsdkfj大姐夫文姐到了困难额我积分那看到你@#￥%……&）（*&……）'
 export const MD5_SUFFIX = 'eiowafnajkdlfjsdkfj3987&jkaha8736$35#@4%!$'
 
 export const md5 = (pwd: string) => {
