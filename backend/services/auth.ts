@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import {connectToDatabase} from 'backend/config/db-connection'
-import {responseClient, md5, MD5_SUFFIX} from 'backend/utils/util'
-import {saltHashPassword, generateToken} from 'backend/utils/security'
-import {UserModel} from 'backend/models/users'
+import {responseClient} from 'backend/utils/util'
+import {saltHashPassword, generateToken, isValidPassword} from 'backend/utils/security'
+import UserModel from 'backend/models/userModel'
 import moment from 'moment'
 import { ObjectId } from 'mongodb'
 import {SUCCESS, DATA_NOTFOUND, DATA_EXIST, INTERNAL_ERROR} from 'backend/config/response-code'
@@ -17,7 +17,7 @@ export const getAllUsers = async (req: NextApiRequest, res: NextApiResponse) => 
       .toArray();
 
     // res.status(200).json({ data: JSON.parse(JSON.stringify(posts)) })
-    responseClient(res, 200, SUCCESS, 'Success', { data: JSON.parse(JSON.stringify(posts)) })
+    responseClient(res, 200, true, SUCCESS, 'Success', { data: JSON.parse(JSON.stringify(posts)) })
   } catch (error) {
     console.log('Error ', error)
   }
@@ -25,18 +25,31 @@ export const getAllUsers = async (req: NextApiRequest, res: NextApiResponse) => 
 
 export const login = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let {userName, password} = req.body;
+    let {account, password} = req.body;
     let { db } = await connectToDatabase();
-    let posts = await db
+    let find = await db
       .collection('users')
       .findOne({
-        username: userName,
-        password: md5(password + MD5_SUFFIX)
+        $or: [{username: account}, {email: account}]
       })
     
-    console.log('FIND ONE ', posts);
+    if (!find) {
+      return responseClient(res, 409, false, DATA_NOTFOUND, 'Data Not Found', find)
+    }
+
+    const passwordValid = await isValidPassword(password, find?.hash, find?.salt)
+    if (!passwordValid) {
+      return responseClient(res, 422, false, DATA_NOTFOUND, 'Password does not match')
+    }
+
+    const responseData = {
+      token_type: 'Bearer',
+      access_token: await generateToken(find),
+      expires_in: '30d'
+    }
+    return responseClient(res, 200, true, SUCCESS, 'Success', responseData)
+    // console.log('FIND ONE ', posts);
     // res.status(200).json({ data: JSON.parse(JSON.stringify(posts)) })
-    responseClient(res, 200, SUCCESS, 'Success', { data: posts })
   } catch (error) {
     console.log('Error ', error)
   }
@@ -48,9 +61,9 @@ export const register = async (req: NextApiRequest, res: NextApiResponse) => {
     const userModel = new UserModel()
 
     // check user exist by username
-    const findUser = await userModel.find('username', username)
+    const findUser = await userModel.find({username})
     if (findUser) {
-      return responseClient(res, 422, DATA_EXIST, 'User Exist')
+      return responseClient(res, 422, false, DATA_EXIST, 'User Exist')
     }
     const {salt, hash} = saltHashPassword(password)
     userModel.hash = hash
@@ -64,7 +77,7 @@ export const register = async (req: NextApiRequest, res: NextApiResponse) => {
     const dataSave = await userModel.create()
     const o_Id = new ObjectId(dataSave?.insertedId)
 
-    const userNew = await userModel.find('_id', o_Id)
+    const userNew = await userModel.find({_id: o_Id})
     const token = await generateToken(userNew)
 
     const responseData = {
@@ -73,8 +86,8 @@ export const register = async (req: NextApiRequest, res: NextApiResponse) => {
       expires_in: '30d'
     }
 
-    return responseClient(res, 200, SUCCESS, 'Success', responseData)
+    return responseClient(res, 200, true, SUCCESS, 'Success', responseData)
   } catch (error) {
-    return responseClient(res, 500, INTERNAL_ERROR, 'Internal Server Error', {})
+    return responseClient(res, 500, false, INTERNAL_ERROR, 'Internal Server Error', {})
   }
 }

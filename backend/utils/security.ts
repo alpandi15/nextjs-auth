@@ -21,7 +21,7 @@ export function saltHashPassword(password: string) {
   }
 }
 
-export function isValidPassword(password: string, hash: string, salt: string) {
+export async function isValidPassword(password: string, hash: string, salt: string) {
   const pwdHash = sha512(password, salt)
   return pwdHash === hash
 }

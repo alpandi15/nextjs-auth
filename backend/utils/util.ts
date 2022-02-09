@@ -9,6 +9,7 @@ export const md5 = (pwd: string) => {
 }
 
 type ResponseDataProps = {
+  success?: boolean,
   code?: number;
   message?: string;
   data?: any
@@ -17,11 +18,13 @@ type ResponseDataProps = {
 export const responseClient = (
   res: NextApiResponse,
   httpCode: number = 500,
+  success: boolean = true,
   code: number = 3,
   message: string ='Internal Server Error',
   data: any = {}
   ) => {
     let responseData: ResponseDataProps = {}
+    responseData.success = Boolean(success)
     responseData.code = code
     responseData.message = message
     responseData.data = data

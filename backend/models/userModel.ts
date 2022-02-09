@@ -1,7 +1,21 @@
 import {connectToDatabase} from 'backend/config/db-connection'
 import { ObjectId } from 'mongodb'
 
-export class UserModel {
+type QueryProps = {
+  _id?: ObjectId|null
+  username?: string|null
+  password?: string|null
+  email?: string|null
+  name?: string|null
+  image?: string|null
+  hash?: string|null
+  salt?: string|null
+  type?: 'admin'|'user'
+  createdAt?: string|null
+  updatedAt?: string|null
+}
+
+export default class UserModel {
   username: string|null
   password: string|null
   email: string|null
@@ -49,10 +63,10 @@ export class UserModel {
     }
   }
 
-  async find(key: '_id'|'username'|'email'|'type', value: string|number|ObjectId) {
+  async find(query: QueryProps) {
     try {
       let { db } = await connectToDatabase();
-      return db.collection('users').findOne({[key]: value})      
+      return db.collection('users').findOne(query)      
     } catch (error: any) {
       throw new Error(error?.message)      
     }
