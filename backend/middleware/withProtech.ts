@@ -29,8 +29,6 @@ const withProtect = (handler: any) => {
         return responseClient(res, 401, false, UNAUTHORIZED, 'Token does not match', {})
       }
   
-      console.log('DECOVE ', decoded)
-  
       const userModel = new UserModel()
   
       const o_Id = new ObjectId(decoded?._id)

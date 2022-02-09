@@ -10,6 +10,6 @@ export const apiChangePassword = async (data: RequestChangePasswordProps) => {
     url: '/auth/change-password',
     auth: true,
     data,
-    method: 'post'
+    method: 'put'
   })
 }

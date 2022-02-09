@@ -71,4 +71,21 @@ export default class UserModel {
       throw new Error(error?.message)      
     }
   }
+
+  async update(o_id: ObjectId, dataUpdate: QueryProps) {
+    try {
+      let { db } = await connectToDatabase();
+      const data = await db
+        .collection('users')
+        .updateOne({_id: o_id},
+          {
+            $set: dataUpdate
+          }
+        )
+      return data
+    } catch (error: any) {
+      throw new Error(error?.message)
+    }
+  }
+
 }

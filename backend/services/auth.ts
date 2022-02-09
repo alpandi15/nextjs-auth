@@ -48,8 +48,6 @@ export const login = async (req: NextApiRequest, res: NextApiResponse) => {
       expires_in: '30d'
     }
     return responseClient(res, 200, true, SUCCESS, 'Success', responseData)
-    // console.log('FIND ONE ', posts);
-    // res.status(200).json({ data: JSON.parse(JSON.stringify(posts)) })
   } catch (error) {
     console.log('Error ', error)
   }
@@ -101,6 +99,29 @@ export const userInfo = async (req: SessionUserRequestProps, res: NextApiRespons
     if (!req.user) {
       return responseClient(res, 409, false, DATA_NOTFOUND, 'User Not Found', {})
     }
+    return responseClient(res, 200, true, SUCCESS, 'Success', req.user)
+  } catch (error) {
+    return responseClient(res, 500, false, INTERNAL_ERROR, 'Internal Server Error', {})
+  }
+}
+
+// withProtect session user available on req.user = {data user}
+export const changePassword = async (req: SessionUserRequestProps, res: NextApiResponse) => {
+  try {
+    let {oldPassword, password} = req.body;
+
+    if (!req.user) {
+      return responseClient(res, 409, false, DATA_NOTFOUND, 'User Not Found', {})
+    }
+
+    const passwordValid = await isValidPassword(oldPassword, req?.user?.hash, req?.user?.salt)
+    if (!passwordValid) {
+      return responseClient(res, 422, false, DATA_NOTFOUND, 'Password does not match')
+    }
+
+    const {salt, hash} = saltHashPassword(password)
+    const userModel = new UserModel()
+    await userModel.update(req?.user?._id, {hash, salt})
     return responseClient(res, 200, true, SUCCESS, 'Success', req.user)
   } catch (error) {
     return responseClient(res, 500, false, INTERNAL_ERROR, 'Internal Server Error', {})
