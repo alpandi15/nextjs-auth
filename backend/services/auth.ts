@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import {connectToDatabase} from 'backend/config/db-connection'
 import {responseClient} from 'backend/utils/util'
-import {saltHashPassword, generateToken, isValidPassword} from 'backend/utils/security'
+import {saltHashPassword, generateToken, isValidPassword, extractTokenProfile} from 'backend/utils/security'
 import UserModel from 'backend/models/userModel'
 import moment from 'moment'
 import { ObjectId } from 'mongodb'
@@ -44,7 +44,7 @@ export const login = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const responseData = {
       token_type: 'Bearer',
-      access_token: await generateToken(find),
+      token: await generateToken(find),
       expires_in: '30d'
     }
     return responseClient(res, 200, true, SUCCESS, 'Success', responseData)
@@ -82,11 +82,26 @@ export const register = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const responseData = {
       token_type: 'Bearer',
-      access_token: token,
+      token: token,
       expires_in: '30d'
     }
 
     return responseClient(res, 200, true, SUCCESS, 'Success', responseData)
+  } catch (error) {
+    return responseClient(res, 500, false, INTERNAL_ERROR, 'Internal Server Error', {})
+  }
+}
+
+interface SessionUserRequestProps extends NextApiRequest {
+  user?: any
+}
+// withProtect session user available on req.user = {data user}
+export const userInfo = async (req: SessionUserRequestProps, res: NextApiResponse) => {
+  try {    
+    if (!req.user) {
+      return responseClient(res, 409, false, DATA_NOTFOUND, 'User Not Found', {})
+    }
+    return responseClient(res, 200, true, SUCCESS, 'Success', req.user)
   } catch (error) {
     return responseClient(res, 500, false, INTERNAL_ERROR, 'Internal Server Error', {})
   }
