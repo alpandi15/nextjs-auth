@@ -29,8 +29,8 @@ module.exports = {
   },
   publicRuntimeConfig: {
     REQUEST_TIMEOUT: process.env.REQUEST_TIMEOUT || 10000,
-    API_URL: `${process.env.API_PROTOCOL}://${process.env.API_HOST}:${process.env.API_PORT}${process.env.API_VERSION}`,
-    IMAGES_DOMAIN: `${process.env.API_IMAGE_PROTOCOL}://${process.env.API_IMAGE_HOST}:${process.env.API_IMAGE_PORT}${process.env.API_IMAGE_VERSION}`,
+    API_URL: `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_VERSION}`,
+    IMAGES_DOMAIN: `${process.env.API_IMAGE_PROTOCOL}://${process.env.API_IMAGE_HOST}${process.env.API_IMAGE_PORT ? `:${process.env.API_IMAGE_PORT}` : ''}${process.env.API_IMAGE_VERSION}`,
     GOOGLE_ID: process.env.GOOGLE_ID || '',
     FACEBOOK_ID: process.env.FACEBOOK_ID || '',
     TIMEZONE_SERVER: process.env.TIMEZONE_SERVER || '',
