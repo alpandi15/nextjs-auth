@@ -29,7 +29,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
 
 type InputProps = {
   username: string|null
-  name: string|null
+  firstName: string|null
+  lastName: string|null
   email: string|null
   image?: string|null
 }
@@ -45,7 +46,8 @@ const ChangePassword = () => {
     resolver: validationSchema,
     defaultValues: {
       image: session?.user?.image?.url,
-      // name: session?.user?.name,
+      firstName: session?.user?.firstName,
+      lastName: session?.user?.lastName,
       email: session?.user?.email,
       username: session?.user?.username
     }
@@ -64,7 +66,8 @@ const ChangePassword = () => {
     }
 
     const res = await apiUpdateProfile({
-      name: values?.name,
+      firstName: values?.firstName,
+      lastName: values?.lastName,
       username: values?.username,
       email: values?.email,
       image,
@@ -108,13 +111,25 @@ const ChangePassword = () => {
         <div>
           <Input
             type="text"
-            id="name"
-            name="name"
-            label="Name"
+            id="firstName"
+            name="firstName"
+            label="First Name"
             control={control}
-            placeholder="Name"
+            placeholder="First Name"
             autoComplete="off"
-            error={errors?.name?.message}
+            error={errors?.firstName?.message}
+          />
+        </div>
+        <div>
+          <Input
+            type="text"
+            id="lastName"
+            name="lastName"
+            label="Last Name"
+            control={control}
+            placeholder="Last Name"
+            autoComplete="off"
+            error={errors?.lastName?.message}
           />
         </div>
         <div>
