@@ -53,6 +53,11 @@ const Home: Page = ({session}: any) => {
               <a className="underline">Change Password</a>
             </Link>
           </div>
+          <div>
+            <Link href="/account/edit">
+              <a className="underline">Edit</a>
+            </Link>
+          </div>
         </div>
         <div className="mt-6">
           <p>You can view this page because you are signed in.</p>
