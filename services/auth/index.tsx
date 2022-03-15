@@ -60,3 +60,15 @@ export async function logout(ctx: any = null) {
   await removeCookies(TOKEN)
   Router.replace('/auth/login')
 }
+
+type ForgotPasswordProps = {
+  account: string
+}
+export async function apiForgotPassword (type: 'email'|'phone', data: ForgotPasswordProps) {
+  return request({
+    url: `/auth/forgot-password/${type}`,
+    auth: false,
+    data,
+    method: 'post'
+  })
+}

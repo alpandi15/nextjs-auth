@@ -99,6 +99,9 @@ const Login = () => {
         </div>
         <div className="mt-4">
           <Button className="w-full" type="submit" disabled={isSubmitting}>Login</Button>
+          <Link href="/auth/forgot-password">
+            <a className="ml-1 font-bold underline text-xs">Forgot Password</a>
+          </Link>
         </div>
         <div className="w-full flex items-center justify-center text-center text-xs mt-4">
           <div>Don't have any account ?</div>
