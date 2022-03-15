@@ -4,7 +4,12 @@ import { request } from '../utils/request'
 import { removeCookies } from '../utils/storage'
 import { TOKEN } from 'constant'
 
-export async function apiRegister (data: any) {
+export type RegisterPropsType = {
+  email: string,
+  phone: string,
+  password: string
+}
+export async function apiRegister (data: RegisterPropsType) {
   return request({
     url: '/auth/register',
     auth: false,
