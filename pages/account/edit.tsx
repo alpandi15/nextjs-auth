@@ -17,7 +17,11 @@ import {uploadImage} from 'services/upload'
 
 const validationSchema = yupResolver(
   yup.object({
-    name: yup.string().required('*Required').min(6, 'Min 6 Characters'),
+    firstName: yup.string().required('*Required').min(6, 'Min 6 Characters'),
+    lastName: yup.string().required('*Required').min(6, 'Min 6 Characters'),
+    email: yup.string()
+      .required('field is required')
+      .matches(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Email Format Invalid'),
     username: yup.string().required('*Required').min(6, 'Min 6 Characters')
   })
 );
@@ -157,7 +161,7 @@ const ChangePassword = () => {
           />
         </div>
         <div className="mt-4">
-          <Button className="w-full" type="submit" disabled={isSubmitting} submitting={isSubmitting}>Change</Button>
+          <Button className="w-full" type="submit" submitting={isSubmitting}>Update</Button>
         </div>
       </form>
     </div>
