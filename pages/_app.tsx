@@ -7,6 +7,8 @@ import { useRouter } from 'next/dist/client/router'
 import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
 import {ToastContainer} from 'components/Alert/Toast'
+import { Provider as ReduxProvider } from 'react-redux'
+import store from 'redux/store'
 
 const MemoizedToastContaineer = memo(ToastContainer)
 
@@ -23,25 +25,28 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page)
 
   return (
-    <SessionProvider.Provider value={{
-      session: {
-        user: pageProps?.session?.user,
-        token: pageProps?.session?.token
-      }
-    }}>
-      <AppStoreProvider>
-        <>
-          {
-            getLayout(
-              <>
-                <Component {...pageProps} key={asPath}/>
-                <MemoizedToastContaineer />
-              </>
-            )
-          }
-        </>
-      </AppStoreProvider>
-    </SessionProvider.Provider>
+
+    <ReduxProvider store={store}>
+      <SessionProvider.Provider value={{
+        session: {
+          user: pageProps?.session?.user,
+          token: pageProps?.session?.token
+        }
+      }}>
+        <AppStoreProvider>
+          <>
+            {
+              getLayout(
+                <>
+                  <Component {...pageProps} key={asPath}/>
+                  <MemoizedToastContaineer />
+                </>
+              )
+            }
+          </>
+        </AppStoreProvider>
+      </SessionProvider.Provider>
+    </ReduxProvider>
   )
 }
 
