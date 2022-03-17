@@ -1,17 +1,20 @@
 import imageCompression from 'browser-image-compression'
 import { request } from 'services/utils/request'
+import getConfig from 'next/config'
 
+const { publicRuntimeConfig } = getConfig()
 // User
-const apiUploadImage = async (bucket: 'profiles'|'articles'|'assets', data: any) => {
+const apiUploadImage = async (type: 'product' = 'product', data: any) => {
   return request({
-    url: `/utils/upload-image/${bucket}`,
+    url: `${publicRuntimeConfig?.IMAGES_DOMAIN}/upload/${type}`,
+    fullUrl: true,
     auth: true,
     data,
     method: 'post'
   })
 }
 
-export const uploadImage = async (bucket: 'profiles'|'articles'|'assets' = 'assets', image: any) => {
+export const uploadImage = async (bucket: 'product' = 'product', image: any) => {
   try {
     const options: any = {
       maxSizeMB: 0.1,

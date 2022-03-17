@@ -25,7 +25,7 @@ type RequestChangeProfileProps = {
 }
 export const apiUpdateProfile = async (data: RequestChangeProfileProps) => {
   return request({
-    url: '/profile/update',
+    url: '/auth/edit-profile',
     auth: true,
     data,
     method: 'put'

@@ -61,7 +61,7 @@ const ChangePassword = () => {
     let image: string|null|undefined
     let imageRaw: string|null|undefined
     if (typeof values?.image === 'object') {
-      const { url, raw } = await uploadImage('profiles', values?.image)
+      const { url, raw } = await uploadImage('product', values?.image)
       image = url
       imageRaw = raw
     } else {
