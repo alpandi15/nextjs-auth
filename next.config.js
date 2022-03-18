@@ -5,12 +5,13 @@ require('dotenv').config()
 
 /** @type {import('next').NextConfig} */
 module.exports = {
+  swcMinify: true,
   reactStrictMode: true,
   i18n: {
     locales: ['en', 'id'],
     defaultLocale: 'id',
   },
-  webpack5: false,
+  webpack5: true,
   env: {
     API_PROTOCOL: process.env.API_PROTOCOL || 'http',
     API_HOST: process.env.API_HOST || 'localhost',
