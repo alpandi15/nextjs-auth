@@ -9,6 +9,7 @@ import { NextPage } from 'next'
 import {ToastContainer} from 'components/Alert/Toast'
 import { Provider as ReduxProvider } from 'react-redux'
 import store from 'redux/store'
+import { ThemeProvider } from 'next-themes';
 
 const MemoizedToastContaineer = memo(ToastContainer)
 
@@ -34,7 +35,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
         }
       }}>
         <AppStoreProvider>
-          <>
+          <ThemeProvider attribute="class">
             {
               getLayout(
                 <>
@@ -43,7 +44,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
                 </>
               )
             }
-          </>
+          </ThemeProvider>
         </AppStoreProvider>
       </SessionProvider.Provider>
     </ReduxProvider>

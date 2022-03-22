@@ -14,7 +14,7 @@ class MyDocument extends Document {
           <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&amp;display=swap"></link>
           <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
         </Head>
-        <body className="bg-slate-100">
+        <body>
           <Main />
           <NextScript />
         </body>
