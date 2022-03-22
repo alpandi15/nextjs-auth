@@ -1,17 +1,30 @@
-import nookies from 'nookies'
+import nookies, {destroyCookie} from 'nookies'
 import {TOKEN} from 'constant'
 import {apiGetSession} from 'services/auth'
 
 export function unauthPage(ctx: any) {
-  return new Promise(resolve => {
-    const allCookies = nookies.get(ctx);
+  return new Promise(async resolve => {
+    // const allCookies = nookies.get(ctx);
 
-    if(allCookies[TOKEN])
-      return ctx?.res?.writeHead(302, {
-        Location: '/'
-      }).end();
+    // if(allCookies[TOKEN]) {
+    //   return ctx?.res?.writeHead(302, {
+    //     Location: '/'
+    //   }).end();
+    // }
 
-    return resolve('unauthorized');
+    const res = await apiGetSession(ctx)
+    if (!res?.success) {
+      console.log('Unauthorize ', res);
+      destroyCookie({}, TOKEN)
+      return resolve('unauthorized');
+      // return ctx?.res?.writeHead(302, {
+      //   Location: `/auth/login?redirect_to=${ctx?.resolvedUrl}`
+      // }).end()
+    } 
+
+    return ctx?.res?.writeHead(302, {
+      Location: '/'
+    }).end();
   });
 }
 
@@ -24,16 +37,16 @@ export const authPage = async (ctx: any) => {
       }).end()
     }
 
-    let user: any = null
-  
     const res = await apiGetSession(ctx)
-    if (res?.success) {
-      user = res?.data
+    if (!res?.success) {
+      return ctx?.res?.writeHead(302, {
+        Location: `/auth/login?redirect_to=${ctx?.resolvedUrl}`
+      }).end()
     } 
 
     return resolve({
       session: {
-        user,
+        user: res?.data,
         token: allCookies[TOKEN] || null
       }
     });

@@ -8,12 +8,12 @@ import type {Page} from 'types/page'
 import Link from 'next/link'
 import styles from 'styles/Account.module.css'
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { session } = await authPage(ctx);
-//   return {
-//     props: { session }
-//   }
-// }
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { session } = await authPage(ctx);
+  return {
+    props: { session }
+  }
+}
 
 const placeholderImage = 
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mPcsnt3PQAHAAKrcPYcMAAAAABJRU5ErkJggg==';
