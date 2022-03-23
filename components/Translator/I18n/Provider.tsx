@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 
 interface I18nProps {
   children: ReactNode,
-  locale: string
+  locale: 'en'|'id'
 }
 
 const Provider = ({
