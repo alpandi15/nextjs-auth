@@ -2,6 +2,10 @@ import {memo} from 'react'
 import Link from 'next/link'
 import {useSessionContext} from 'providers'
 import Theme from 'components/Theme'
+import Translator from 'components/Translator'
+import translate from 'components/Translator/I18n/translate'
+
+const MemoTranslator = memo(Translator)
 
 const Header = () => {
   const {session} = useSessionContext()
@@ -13,9 +17,10 @@ const Header = () => {
           <a>Next Auth</a>
         </Link>
       </div>
-      <div>Header</div>
+      <div>{translate('layout.header')}</div>
 
       <div className="flex items-center">
+        <MemoTranslator />
         <Theme />
         <div>
           {

@@ -12,3 +12,9 @@ export const LOCALES = {
   ENGLISH: 'en',
   INDONESIA: 'id',
 }
+
+export const LOCALE_COOKIE = 'locale'
+export const LOCALE_FLAG = {
+  id: 'flag-id',
+  en: 'flag-en'
+}

@@ -14,3 +14,17 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.flag.flag-id {
+  background-position: 0 -432px;
+}
+
+.flag {
+  background-image: url('../public/assets/image/flag.png');
+  background-repeat: no-repeat;
+  background-size: 24px 648px;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  float: left;
+}
