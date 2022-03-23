@@ -9,7 +9,9 @@ import { NextPage } from 'next'
 import {ToastContainer} from 'components/Alert/Toast'
 import { Provider as ReduxProvider } from 'react-redux'
 import store from 'redux/store'
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from 'next-themes'
+import { DefaultSeo } from 'next-seo'
+import SEO from '../next-seo.config'
 
 const MemoizedToastContaineer = memo(ToastContainer)
 
@@ -21,13 +23,14 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
+const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   const {asPath} = useRouter()
   const getLayout = Component.getLayout ?? ((page) => page)
+  // const { locale = 'id' } = router
 
   return (
-
     <ReduxProvider store={store}>
+      <DefaultSeo {...SEO} key={router.route} />
       <SessionProvider.Provider value={{
         session: {
           user: pageProps?.session?.user,

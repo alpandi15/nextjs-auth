@@ -14,6 +14,7 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import Button from 'components/Form/Button'
 import {toast} from 'components/Alert/Toast'
 import Link from 'next/dist/client/link'
+import { NextSeo } from 'next-seo'
 
 const validationSchema = yupResolver(
   yup.object({
@@ -73,6 +74,10 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
+      <NextSeo
+        title="Login"
+        description="Please login to active your account"
+      />
       <div>Login</div>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
         <div>
