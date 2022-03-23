@@ -20,8 +20,12 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
 }
 
+interface RouterProps {
+  locale?: 'id'|'en'
+}
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
+  router: RouterProps
 }
 
 const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
