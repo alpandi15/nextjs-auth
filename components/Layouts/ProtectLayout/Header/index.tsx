@@ -4,6 +4,7 @@ import {useSessionContext} from 'providers'
 import {logout} from 'services/auth'
 import Theme from 'components/Theme'
 import Translator from 'components/Translator'
+import translate from 'components/Translator/I18n/translate'
 
 const MemoTranslator = memo(Translator)
 
@@ -16,21 +17,21 @@ const Header = () => {
           <a>Next Auth</a>
         </Link>
       </div>
-      <div>Header</div>
-        <div className="flex items-center">
-        <MemoTranslator />
-        <Theme />
-        <div>
-          {
-            session?.user ? (
-              <button onClick={logout.bind(this)}>Logout</button>
-            ) : (
-              <Link href="/auth/login">
-                <a>Login</a>
-              </Link>
-            )
-          }
-        </div>
+      <div>{translate('layout.header')}</div>
+      <div className="flex items-center">
+      <MemoTranslator />
+      <Theme />
+      <div>
+        {
+          session?.user ? (
+            <button onClick={logout.bind(this)}>Logout</button>
+          ) : (
+            <Link href="/auth/login">
+              <a>Login</a>
+            </Link>
+          )
+        }
+      </div>
       </div>
     </header>
   )

@@ -48,15 +48,15 @@ export default function () {
         <div className={cn({'flag': true, [LOCALE_FLAG[currentLocale]]: !!currentLocale})}></div>
         <i className="material-icons">arrow_drop_down</i>
       </div>
-      <ul className={cn({hidden: !open}, 'absolute right-0 bottom-[-55px] min-w-[160px] max-w-[340px] dark:bg-[#1D2226] bg-white')}>
-        <li>
-          <div className="cursor-pointer" onClick={() => onSwitchTranlate('en')}>
+      <ul className={cn({hidden: !open}, 'absolute right-0 bottom-[-77px] min-w-[160px] max-w-[340px] dark:bg-[#1D2226] bg-white')}>
+        <li className="cursor-pointer px-[10px] py-[5px]" onClick={() => onSwitchTranlate('en')}>
+          <div>
             <div className="flag flag-en" />
             English
           </div>
         </li>
-        <li>
-          <div className="cursor-pointer" onClick={() => onSwitchTranlate('id')}>
+        <li className="cursor-pointer px-[10px] py-[5px]" onClick={() => onSwitchTranlate('id')}>
+          <div>
             <div className="flag flag-id" />
             Indonesia
           </div>
