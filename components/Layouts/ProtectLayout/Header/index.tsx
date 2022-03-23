@@ -3,6 +3,9 @@ import Link from 'next/link'
 import {useSessionContext} from 'providers'
 import {logout} from 'services/auth'
 import Theme from 'components/Theme'
+import Translator from 'components/Translator'
+
+const MemoTranslator = memo(Translator)
 
 const Header = () => {
   const {session} = useSessionContext()
@@ -15,6 +18,7 @@ const Header = () => {
       </div>
       <div>Header</div>
         <div className="flex items-center">
+        <MemoTranslator />
         <Theme />
         <div>
           {
