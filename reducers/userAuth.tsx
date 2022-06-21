@@ -1,7 +1,6 @@
-import {SESSION_USER} from './types'
-import {ActionTypeReducers} from './types'
+import {SESSION_USER, ActionTypeReducers} from './types'
 
-export default function userAuthReducer(state: any, action: ActionTypeReducers) {
+export default function userAuthReducer (state: any, action: ActionTypeReducers) {
   switch (action?.type) {
     case SESSION_USER:
       return {
@@ -10,8 +9,8 @@ export default function userAuthReducer(state: any, action: ActionTypeReducers) 
         error: {
           message: action?.payload?.errorMessage
         }
-      };
+      }
     default:
-      return state;
+      return state
   }
 }
