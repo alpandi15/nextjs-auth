@@ -9,11 +9,24 @@ import {TOKEN} from 'constant'
 import {PublicLayout as Layout} from 'components/Layouts'
 import {unauthPage} from 'components/Middleware'
 import { ReactElement } from 'react'
+import * as yup from 'yup'
+import {yupResolver} from '@hookform/resolvers/yup'
+import Button from 'components/Form/Button'
+import {toast} from 'components/Alert/Toast'
+import Link from 'next/dist/client/link'
+import { NextSeo } from 'next-seo'
+
+const validationSchema = yupResolver(
+  yup.object({
+    account: yup.string().required('*Required'),
+    password: yup.string().required('*Required').min(6, 'Min 6 Characters')
+  })
+);
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = await unauthPage(ctx)
-  console.log('TOKEN ', token);
-  return { props: {} }
+  // console.log('TOKEN ', token);
+  return { props: {token} }
 }
 
 const Login = () => {
@@ -23,7 +36,9 @@ const Login = () => {
     control,
     formState: {errors, isSubmitting},
     handleSubmit
-  } = useForm<LoginPropsType>()
+  } = useForm<LoginPropsType>({
+    resolver: validationSchema
+  })
 
   const onSubmit = async (values: LoginPropsType) => {
     const res = await apiLogin({
@@ -41,23 +56,36 @@ const Login = () => {
         push(url, undefined, {locale})
         return
       }
+      toast.notify(res?.meta?.message, {
+        title: 'Success',
+        duration: 2,
+        type: 'success'
+      });
       push('/', undefined, {locale})
       return
     }
-    alert(res?.message)
+    toast.notify(res?.message, {
+      title: 'Error Login',
+      duration: 5,
+      type: 'error'
+    });
     return
   }
 
   return (
     <div className={styles.container}>
+      <NextSeo
+        title="Login"
+        description="Please login to active your account"
+      />
       <div>Login</div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
         <div>
           <Input
             type="text"
             id="account"
             name="account"
-            icon="email"
+            label="Email/Phone"
             control={control}
             placeholder="Email or Phone Number"
             error={errors?.account?.message}
@@ -68,14 +96,23 @@ const Login = () => {
             type="password"
             id="password"
             name="password"
+            label="Password"
             control={control}
             placeholder="Password"
-            icon="lock"
             error={errors?.password?.message}
           />
         </div>
-        <div>
-          <button type="submit" disabled={isSubmitting}>Login</button>
+        <div className="mt-4">
+          <Button className="w-full" type="submit" disabled={isSubmitting}>Login</Button>
+          <Link href="/auth/forgot-password">
+            <a className="ml-1 font-bold underline text-xs">Forgot Password</a>
+          </Link>
+        </div>
+        <div className="w-full flex items-center justify-center text-center text-xs mt-4">
+          <div>Don't have any account ?</div>
+          <Link href="/auth/register">
+            <a className="ml-1 font-bold underline text-xs">Register</a>
+          </Link>
         </div>
       </form>
     </div>

@@ -3,10 +3,12 @@ import Image from 'next/image'
 import {authPage} from 'components/Middleware'
 import {logout} from 'services/auth'
 import {ProtectLayout as Layout} from 'components/Layouts'
-import { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 import type {Page} from 'types/page'
 import Link from 'next/link'
-import styles from './Profile.module.css'
+import styles from 'styles/Account.module.css'
+import { AnimatePresence } from 'framer-motion'
+import Modal from 'components/Modal'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { session } = await authPage(ctx);
@@ -19,6 +21,8 @@ const placeholderImage =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mPcsnt3PQAHAAKrcPYcMAAAAABJRU5ErkJggg==';
 
 const Home: Page = ({session}: any) => {
+  const [modalOpen, setModalOpen] = useState(false)
+
   if (!session) return <div></div>
 
   if (session) {
@@ -44,15 +48,32 @@ const Home: Page = ({session}: any) => {
           />
         </div>
         <h3>{session?.user?.firstName}</h3>
-        <button onClick={logout.bind(this)}>Sign Out</button>
-        <div>
+        <div className="mt-4">
+          <button className="bg-red-500 text-white px-2 rounded" onClick={logout.bind(this)}>Sign Out</button>
+        </div>
+        <div className="mt-4">
           <div>
             <Link href="/account/change-password">
-              <a href="">Change Password</a>
+              <a className="underline">Change Password</a>
+            </Link>
+          </div>
+          <div>
+            <Link href="/account/edit">
+              <a className="underline">Edit</a>
             </Link>
           </div>
         </div>
-        <p>You can view this page because you are signed in.</p>
+        <div>
+          <button onClick={() => setModalOpen(true)}>Open Modal</button>
+        </div>
+        <div className="mt-6">
+          <p>You can view this page because you are signed in.</p>
+        </div>
+        <AnimatePresence>
+          {modalOpen && (
+            <Modal handleClose={() => setModalOpen(false)} type='dropIn' />
+          )}
+        </AnimatePresence>
       </div>
     )
   }

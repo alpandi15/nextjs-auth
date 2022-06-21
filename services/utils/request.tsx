@@ -115,15 +115,15 @@ export async function request({
       success: true,
       ...response.data
     })
-  } catch (error) {
-    const { response } = error
+  } catch (error: any) {
+    // const { response } = error
     let msg
     let dat
     let statusCode
     let detailData = ''
-    if (response && response instanceof Object) {
-      const { data, statusText } = response
-      statusCode = response.status
+    if (error && error?.response instanceof Object) {
+      const { data, statusText } = error?.response
+      statusCode = error?.response.status
       const { detail } = data
       detailData = detail
       msg = data.message || statusText

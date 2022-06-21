@@ -14,3 +14,41 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.flag.flag-id {
+  background-position: 0 -432px;
+}
+
+.flag {
+  background-image: url('../public/assets/image/flag.png');
+  background-repeat: no-repeat;
+  background-size: 24px 648px;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  float: left;
+}
+
+/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../public/assets/fonts/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}

@@ -2,18 +2,25 @@ import {memo} from 'react'
 import Link from 'next/link'
 import {useSessionContext} from 'providers'
 import {logout} from 'services/auth'
-import styles from './Header.module.css'
+import Theme from 'components/Theme'
+import Translator from 'components/Translator'
+import translate from 'components/Translator/I18n/translate'
+
+const MemoTranslator = memo(Translator)
 
 const Header = () => {
   const {session} = useSessionContext()
   return (
-    <header className={styles.container}>
+    <header className='w-full h-[50px] fixed flex items-center justify-between dark:bg-[#1D2226] bg-[#f1d797] px-[20px]'>
       <div>
         <Link href="/">
           <a>Next Auth</a>
         </Link>
       </div>
-      <div>Header</div>
+      <div>{translate('layout.header')}</div>
+      <div className="flex items-center">
+      <MemoTranslator />
+      <Theme />
       <div>
         {
           session?.user ? (
@@ -24,6 +31,7 @@ const Header = () => {
             </Link>
           )
         }
+      </div>
       </div>
     </header>
   )

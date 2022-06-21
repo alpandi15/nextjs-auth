@@ -4,7 +4,12 @@ import { request } from '../utils/request'
 import { removeCookies } from '../utils/storage'
 import { TOKEN } from 'constant'
 
-export async function apiRegister (data: any) {
+export type RegisterPropsType = {
+  email: string,
+  phone: string,
+  password: string
+}
+export async function apiRegister (data: RegisterPropsType) {
   return request({
     url: '/auth/register',
     auth: false,
@@ -54,4 +59,16 @@ export async function logout(ctx: any = null) {
   }
   await removeCookies(TOKEN)
   Router.replace('/auth/login')
+}
+
+type ForgotPasswordProps = {
+  account: string
+}
+export async function apiForgotPassword (type: 'email'|'phone', data: ForgotPasswordProps) {
+  return request({
+    url: `/auth/forgot-password/${type}`,
+    auth: false,
+    data,
+    method: 'post'
+  })
 }
